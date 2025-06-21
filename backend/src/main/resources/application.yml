@@ -30,3 +30,6 @@ spring:
     show-sql: true
   main:
     web-application-type: servlet
+
+aws:
+  region: us-west-2

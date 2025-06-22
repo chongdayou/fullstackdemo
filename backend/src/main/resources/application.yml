@@ -32,4 +32,4 @@ spring:
     web-application-type: servlet
 
 aws:
-  region: us-west-2
+  region: us-east-2

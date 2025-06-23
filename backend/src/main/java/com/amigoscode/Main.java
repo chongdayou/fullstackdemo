@@ -25,26 +25,31 @@ public class Main {
     }
 
     @Bean
-    @Profile("!Test")
+    // @Profile("!Test")
     CommandLineRunner runner(
             CustomerRepository customerRepository,
             PasswordEncoder passwordEncoder,
-            S3Service s3Service) {
+            S3Service s3Service,
+            S3Buckets s3Buckets) {
         return args -> {
             //createRandomCustomer(customerRepository, passwordEncoder);
-            s3Service.putObject(
-                    "fullstackdemo-customer-test",
-                    "foo",
-                    "Hello World".getBytes()
-            );
-
-            byte[] obj = s3Service.getObject(
-                    "fullstackdemo-customer-test",
-                    "foo"
-            );
-
-            System.out.println("Get object " + new String(obj));
+            testBucketUploadAndDownload(s3Service, s3Buckets);
         };
+    }
+
+    private static void testBucketUploadAndDownload(S3Service s3Service, S3Buckets s3Buckets) {
+        s3Service.putObject(
+                s3Buckets.getCustomer(),
+                "foo",
+                "Hello World".getBytes()
+        );
+
+        byte[] obj = s3Service.getObject(
+                s3Buckets.getCustomer(),
+                "foo"
+        );
+
+        System.out.println("Get object " + new String(obj));
     }
 
     private static void createRandomCustomer(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {

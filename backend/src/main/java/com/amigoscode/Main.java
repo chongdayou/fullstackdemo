@@ -28,12 +28,10 @@ public class Main {
     // @Profile("!Test")
     CommandLineRunner runner(
             CustomerRepository customerRepository,
-            PasswordEncoder passwordEncoder,
-            S3Service s3Service,
-            S3Buckets s3Buckets) {
+            PasswordEncoder passwordEncoder) {
         return args -> {
-            //createRandomCustomer(customerRepository, passwordEncoder);
-            testBucketUploadAndDownload(s3Service, s3Buckets);
+            createRandomCustomer(customerRepository, passwordEncoder);
+            //testBucketUploadAndDownload(s3Service, s3Buckets);
         };
     }
 

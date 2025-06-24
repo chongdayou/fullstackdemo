@@ -83,4 +83,9 @@ public class CustomerListDataAccessService implements CustomerDao {
                 .findFirst();
     }
 
+    @Override
+    public void updateCustomerPorfileImageId(String profileImageId, Integer customerId) {
+        //TODO
+    }
+
 }

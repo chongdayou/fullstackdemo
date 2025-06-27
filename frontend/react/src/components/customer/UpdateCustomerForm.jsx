@@ -3,6 +3,8 @@ import * as Yup from 'yup';
 import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
 import {saveCustomer, updateCustomer} from "../../services/client.js";
 import {successNotification, errorNotification} from "../../services/notification.js";
+import React, {useCallback} from "react";
+import {useDropzone} from 'react-dropzone'
 
 const MyTextInput = ({label, ...props}) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -23,10 +25,31 @@ const MyTextInput = ({label, ...props}) => {
     );
 };
 
+// hook for image drop
+const ImageDropzone = () => {
+    const onDrop = useCallback(acceptedFiles => {
+        // Do something with the files
+    }, [])
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+
+    return (
+        <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {
+                isDragActive ?
+                    <p>Drop the picture here ...</p> :
+                    <p>Drag and drop some picture here, or click to select picture</p>
+            }
+        </div>
+    )
+}
+
 // And now we can use these
 const UpdateCustomerForm = ({ fetchCustomers, initialValues, customerId }) => {
+    console.log("UpdateCustomerForm mounted");
     return (
         <>
+            <ImageDropzone/>
             <Formik
                 initialValues={initialValues}
                 validationSchema={Yup.object({

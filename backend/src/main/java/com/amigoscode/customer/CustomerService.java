@@ -134,7 +134,7 @@ public class CustomerService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //TODO: Store profileImageId to db
+        customerDao.updateCustomerPorfileImageId(profileImageId, customerId);
     }
 
     public byte[] getCustomerProfileImage(Integer customerId) {
@@ -144,11 +144,15 @@ public class CustomerService {
                         "customer with id [%s] not found".formatted(customerId)
                 ));
         //TODO: Check if profileImageId is empty or null
-        String profileImageId = "TODO";
+        if (customer.profileImageId().isBlank()) {
+            throw new ResourceNotFoundException(
+                    "customer with id [%s] profile image not found".formatted(customerId)
+            );
+        }
 
         byte[] profileImage = s3Service.getObject(
                 buckets.getCustomer(),
-                "profile-image/%s/%s".formatted(customerId, UUID.randomUUID().toString())
+                "profile-image/%s/%s".formatted(customerId, customer.profileImageId())
         );
 
         return profileImage;

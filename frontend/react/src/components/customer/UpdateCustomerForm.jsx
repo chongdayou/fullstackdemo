@@ -1,6 +1,6 @@
 import {Form, Formik, useField} from 'formik';
 import * as Yup from 'yup';
-import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
+import {Alert, AlertIcon, Box, Button, FormLabel, Image, Input, Select, Stack, VStack} from "@chakra-ui/react";
 import {saveCustomer, updateCustomer} from "../../services/client.js";
 import {successNotification, errorNotification} from "../../services/notification.js";
 import React, {useCallback} from "react";
@@ -33,14 +33,22 @@ const ImageDropzone = () => {
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
     return (
-        <div {...getRootProps()}>
+        <Box {...getRootProps()}
+             w={'100%'}
+             textAlign={'center'}
+             border={'dashed'}
+             borderColor={'grey.200'}
+             borderRadius={'3xl'}
+             p={6}
+             rounded={'md'}
+        >
             <input {...getInputProps()} />
             {
                 isDragActive ?
                     <p>Drop the picture here ...</p> :
                     <p>Drag and drop some picture here, or click to select picture</p>
             }
-        </div>
+        </Box>
     )
 }
 
@@ -49,7 +57,16 @@ const UpdateCustomerForm = ({ fetchCustomers, initialValues, customerId }) => {
     console.log("UpdateCustomerForm mounted");
     return (
         <>
-            <ImageDropzone/>
+            <VStack spacing={'5'} mb={'5'}>
+                <Image
+                    borderRadius={'full'}
+                    boxSize={'150px'}
+                    objectFit={'cover'}
+                    src={''}
+                />
+                <ImageDropzone/>
+            </VStack>
+
             <Formik
                 initialValues={initialValues}
                 validationSchema={Yup.object({

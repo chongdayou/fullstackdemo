@@ -30,6 +30,11 @@ spring:
     show-sql: true
   main:
     web-application-type: servlet
+  servlet:
+      multipart: 10MB
+      max-request-size: 10MB
+  codec:
+      max-in-memory-size: 10MB
 
 aws:
   region: us-east-2

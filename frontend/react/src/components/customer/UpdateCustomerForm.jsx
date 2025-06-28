@@ -1,10 +1,17 @@
 import {Form, Formik, useField} from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Box, Button, FormLabel, Image, Input, Select, Stack, VStack} from "@chakra-ui/react";
-import {saveCustomer, updateCustomer} from "../../services/client.js";
+import {
+    customerProfilePictureUrl,
+    saveCustomer,
+    updateCustomer,
+    uploadCustomerProfilePicture
+} from "../../services/client.js";
 import {successNotification, errorNotification} from "../../services/notification.js";
 import React, {useCallback} from "react";
 import {useDropzone} from 'react-dropzone'
+
+
 
 const MyTextInput = ({label, ...props}) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -26,9 +33,20 @@ const MyTextInput = ({label, ...props}) => {
 };
 
 // hook for image drop
-const ImageDropzone = () => {
+const ImageDropzone = ({ customerId, fetchCustomers }) => {
     const onDrop = useCallback(acceptedFiles => {
-        // Do something with the files
+        const formData = new FormData();
+        formData.append("file", acceptedFiles[0])
+        uploadCustomerProfilePicture(
+            customerId,
+            formData
+        ).then((res) => {
+            successNotification("Success", "Profile picture uploaded");
+            fetchCustomers();
+        }).catch((err) => {
+            errorNotification("Failed", "Profile picture failed upload");
+            //console.log(err)
+        });
     }, [])
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
@@ -62,9 +80,12 @@ const UpdateCustomerForm = ({ fetchCustomers, initialValues, customerId }) => {
                     borderRadius={'full'}
                     boxSize={'150px'}
                     objectFit={'cover'}
-                    src={''}
+                    src={customerProfilePictureUrl(customerId)}
                 />
-                <ImageDropzone/>
+                <ImageDropzone
+                    customerId={customerId}
+                    fetchCustomers={fetchCustomers}
+                />
             </VStack>
 
             <Formik

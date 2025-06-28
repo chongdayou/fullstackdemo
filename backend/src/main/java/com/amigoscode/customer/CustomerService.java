@@ -128,7 +128,7 @@ public class CustomerService {
         try {
             s3Service.putObject(
                     buckets.getCustomer(),
-                    "profile-image/%s/%s".formatted(customerId, UUID.randomUUID().toString()),
+                    "profile-image/%s/%s".formatted(customerId, profileImageId),
                     file.getBytes()
             );
         } catch (IOException e) {

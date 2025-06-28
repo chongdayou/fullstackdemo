@@ -61,3 +61,23 @@ export const login = async (usernameAndPassword) => {
         throw e;
     }
 }
+
+// send to uploadProfileImage() in the backend
+export const uploadCustomerProfilePicture = async (id, formData) => {
+    console.log("Uploading image...", formData);
+    try {
+        return axios.post(
+            `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}/profile-image`,
+            formData,
+            {
+                ...getAuthConfig(),
+                'Content-Type' : 'multipart/form-data'
+            }
+        );
+    } catch (e) {
+        throw e;
+    }
+}
+
+export const customerProfilePictureUrl = (id) =>
+    `${import.meta.env.VITE_API_BASE_URL}/api/v1/customers/${id}/profile-image`;
